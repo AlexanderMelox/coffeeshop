@@ -1,0 +1,17 @@
+[
+  {
+    "id": "0",
+    "name": "ChocoLatte",
+    "email": "caf.fiend@gmail.com",
+    "size": "GRANDE",
+    "flavor": "MOCHA"
+  },
+  {
+    "id": "1",
+    "name": "Water + Espresso",
+    "espressoShots": 3,
+    "email": "hashtag-coffee@gmail.com",
+    "size": "SHORT",
+    "iced": true
+  }
+]

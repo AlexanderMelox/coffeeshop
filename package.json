@@ -4,16 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.9.3",
-    "graphql": "^14.5.4",
-    "lodash": "^4.17.15",
-    "mongoose": "^5.7.0",
-    "validator": "^11.1.0"
+    "apollo-server": "*",
+    "cuid": "^2.1.6",
+    "graphql": "^14.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
