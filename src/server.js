@@ -1,9 +1,14 @@
 // filesystem package to read / write files
-const fs = require('fs');
 const cuid = require('cuid');
 const { ApolloServer, gql } = require('apollo-server');
 
-const orders = JSON.parse(fs.readFileSync(`${__dirname}/db.json`, 'utf-8'));
+const {
+  getAllOrders,
+  getOrderByID,
+  insertOne,
+  updateOrderByID,
+  deleteOrderByID
+} = require('./utils/orders');
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
@@ -69,30 +74,26 @@ const typeDefs = gql`
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    orders: () => orders,
+    orders: () => {
+      return getAllOrders();
+    },
     order: (obj, args) => {
-      let order = orders.find(order => order.id === args.id);
+      const order = getOrderByID(args.id);
       return order;
     }
   },
   Mutation: {
     createOrder(obj, { input }) {
-      let newOrder = {
-        id: cuid(),
-        ...input
-      };
-      orders.push(newOrder);
+      const newOrder = insertOne(input);
       return newOrder;
     },
     updateOrder(obj, { id, input }) {
-      let updatedOrder;
-      orders.forEach(order => {
-        if (order.id === id) {
-          order = { ...order, ...input };
-          updatedOrder = order;
-        }
-      });
+      let updatedOrder = updateOrderByID(id, input);
       return updatedOrder;
+    },
+    deleteOrder(obj, { id }) {
+      const deletedOrder = deleteOrderByID(id);
+      return deletedOrder;
     }
   }
 };
@@ -102,6 +103,6 @@ const server = new ApolloServer({
   resolvers
 });
 
-server.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-);
+server.listen({ port: 4000 }).then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
